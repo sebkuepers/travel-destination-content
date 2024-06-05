@@ -25,6 +25,7 @@ class EditorialCrew:
 
         #create agents
         tpa_agent = agents.profile_analysis_agent()
+        tpa_reviewer_agent = agents.senior_analyst_reviewer_agent()
 
         #create tasks
         profile_creation_task = tasks.profile_creation_task(
@@ -40,13 +41,17 @@ class EditorialCrew:
             self.cabin
             )
         
+        profile_review_task = tasks.profile_review_task(
+            tpa_reviewer_agent
+            )
+        
         # Create Crew responsible for Copy
         crew = Crew(
             agents=[
-                tpa_agent
+                tpa_agent, tpa_reviewer_agent
             ],
             tasks=[
-                profile_creation_task
+                profile_creation_task, profile_review_task, profile_creation_task
             ],
             process=Process.sequential,  # Optional: Sequential task execution is default
             memory=True,
